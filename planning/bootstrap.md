@@ -9,7 +9,6 @@
 - Restart Cilium agent, Envoy, and operator after the Helm upgrade. The chart updated the ConfigMap and release state, but the already-running pods did not pick up the Gateway API controller settings until restarted.
 - Reverted the first Cloudflare/Gateway/Flux Web UI attempt after the v2 API endpoint stopped responding over TCP during reconciliation. Keep the rollback in Git until the node is inspected from console or local access.
 - Retry starts with the Cloudflare tunnel runner only, using the manually created `cloudflared/tunnel-token` secret and pinning `cloudflare/cloudflared` to `2026.5.2`.
-- Add the shared Cilium Gateway as a separate step after verifying `cloudflared` connections. The Gateway only handles HTTP for `*.v2.lucas.engineering`; TLS terminates at Cloudflare Access for now.
 
 ## Backlog
 
