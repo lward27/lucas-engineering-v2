@@ -8,6 +8,7 @@
 - Preserve the existing Cilium Helm chart version and k3s-specific values, then add `gatewayAPI.enabled=true`. Upgrading Cilium is a separate change, not part of bootstrapping.
 - Restart Cilium agent, Envoy, and operator after the Helm upgrade. The chart updated the ConfigMap and release state, but the already-running pods did not pick up the Gateway API controller settings until restarted.
 - Reverted the first Cloudflare/Gateway/Flux Web UI attempt after the v2 API endpoint stopped responding over TCP during reconciliation. Keep the rollback in Git until the node is inspected from console or local access.
+- Retry starts with the Cloudflare tunnel runner only, using the manually created `cloudflared/tunnel-token` secret and pinning `cloudflare/cloudflared` to `2026.5.2`.
 
 ## Backlog
 
