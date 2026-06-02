@@ -9,6 +9,7 @@
 - Restart Cilium agent, Envoy, and operator after the Helm upgrade. The chart updated the ConfigMap and release state, but the already-running pods did not pick up the Gateway API controller settings until restarted.
 - Reverted the first Cloudflare/Gateway/Flux Web UI attempt after the v2 API endpoint stopped responding over TCP during reconciliation. Keep the rollback in Git until the node is inspected from console or local access.
 - Retry starts with the Cloudflare tunnel runner only, using the manually created `cloudflared/tunnel-token` secret and pinning `cloudflare/cloudflared` to `2026.5.2`.
+- Reverted the later Cilium Gateway-only step after reproducing the TCP blackhole to `192.168.20.242:6443` over the VPN path. Keep v2 Cloudflare origins pointed directly at in-cluster services until the Gateway/VPN interaction is understood.
 
 ## Backlog
 
@@ -16,4 +17,5 @@
 - Add a smoke-test workload and HTTPRoute once an application namespace exists. That should verify Gateway API routing through Cilium rather than just controller readiness.
 - Decide whether the Cilium cluster name should move from `default` to `lucas-engineering-v2`. It is cosmetic for this single cluster today, but should be intentional before clustermesh or shared identity assumptions are introduced.
 - Add a managed rollout trigger for future Cilium config changes if this repo starts changing Helm values often.
-- Retry Cloudflare and Flux Web UI in smaller commits: first only `cloudflared` with a verified tunnel token, then the Cilium Gateway, then one HTTPRoute for `flux.v2.lucas.engineering`.
+- Retry Flux Web UI without Cilium Gateway by pointing the Cloudflare tunnel public hostname directly at the in-cluster Flux Web service.
+- Investigate why creating a Cilium Gateway for `*.v2.lucas.engineering` breaks TCP access to the node over `utun4` while ICMP continues. Do not reintroduce Gateway API exposure until this is explained.
