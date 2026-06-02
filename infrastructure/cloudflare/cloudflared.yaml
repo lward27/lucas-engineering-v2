@@ -46,6 +46,12 @@ spec:
             requests:
               cpu: 100m
               memory: 64Mi
+          startupProbe:
+            failureThreshold: 18
+            httpGet:
+              path: /ready
+              port: 2000
+            periodSeconds: 10
 ---
 apiVersion: v1
 kind: Service
