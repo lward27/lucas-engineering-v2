@@ -12,6 +12,7 @@
 - Reverted the later Cilium Gateway-only step after reproducing the TCP blackhole to `192.168.20.242:6443` over the VPN path. Keep v2 Cloudflare origins pointed directly at in-cluster services until the Gateway/VPN interaction is understood.
 - Add a startup probe to `cloudflared` because `/ready` can fail while edge discovery and QUIC registration are still settling.
 - Add Flux Web UI without Gateway API. Cloudflare should route `flux-v2.lucas.engineering` directly to the `flux-web` service in `flux-system`; use this first-level hostname instead of `flux.v2.lucas.engineering` so Cloudflare Universal SSL can cover it without deeper-subdomain certificate work.
+- Expose Hubble UI through Cloudflare Tunnel at `hubble-v2.lucas.engineering`, routed directly to `hubble-ui.kube-system.svc.cluster.local:80`, and protect it with Cloudflare Access because Hubble UI has no built-in external auth boundary.
 
 ## Backlog
 
