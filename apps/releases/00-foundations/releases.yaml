@@ -87,6 +87,7 @@ spec:
   interval: 30m0s
   releaseName: postgresql
   targetNamespace: apps-prod
+  timeout: 20m0s
   upgrade:
     remediation:
       retries: 3
@@ -114,6 +115,7 @@ spec:
   interval: 30m0s
   releaseName: qdrant
   targetNamespace: apps-prod
+  timeout: 20m0s
   upgrade:
     remediation:
       retries: 3
@@ -141,6 +143,7 @@ spec:
   interval: 30m0s
   releaseName: ollama
   targetNamespace: apps-prod
+  timeout: 20m0s
   upgrade:
     remediation:
       retries: 3
