@@ -7,6 +7,7 @@
 - Public exposure stays out of Cilium Gateway and ingress-nginx. Cloudflare Tunnel routes must point directly at service DNS names after the target service is Ready.
 - The registry, Tekton, and observability ingress templates are disabled in values because v2 exposure is Cloudflare-managed.
 - RabbitMQ is represented locally instead of by copying the old raw manifest because the old manifest committed static credential values.
+- Tekton is not active in the CI/registry phase yet because the old `tekton-pipeline` wrapper renders duplicate `ConfigMap/config-observability` resources and Helm rejects the release before install.
 
 ## Backlog
 
@@ -15,3 +16,4 @@
 - Seed `registry-v2.lucas.engineering` before switching private-image workloads away from `registry.lucas.engineering`.
 - Add a post-registry activation pass that unsuspends `apps-core`, then `apps-agent-products`, after the required secrets exist and image pulls are verified.
 - Replace old Argo/cert-manager/ingress assumptions inside upstream charts so values can disable every Ingress cleanly.
+- Fix or replace the old Tekton wrapper chart, then add `tekton-blocked.yaml` back to the active CI/registry Kustomization.
