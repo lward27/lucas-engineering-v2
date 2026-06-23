@@ -1,0 +1,216 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: loki
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: ./charts/loki
+      interval: 10m0s
+      sourceRef:
+        kind: GitRepository
+        name: lucas-engineering-apps
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  interval: 30m0s
+  releaseName: loki
+  targetNamespace: monitoring
+  timeout: 10m0s
+  upgrade:
+    remediation:
+      retries: 3
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: mimir
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: ./charts/mimir
+      interval: 10m0s
+      sourceRef:
+        kind: GitRepository
+        name: lucas-engineering-apps
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  interval: 30m0s
+  releaseName: mimir
+  targetNamespace: monitoring
+  timeout: 10m0s
+  upgrade:
+    remediation:
+      retries: 3
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: tempo
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: ./charts/tempo
+      interval: 10m0s
+      sourceRef:
+        kind: GitRepository
+        name: lucas-engineering-apps
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  interval: 30m0s
+  releaseName: tempo
+  targetNamespace: monitoring
+  timeout: 10m0s
+  upgrade:
+    remediation:
+      retries: 3
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: promtail
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: ./charts/promtail
+      interval: 10m0s
+      sourceRef:
+        kind: GitRepository
+        name: lucas-engineering-apps
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  interval: 30m0s
+  releaseName: promtail
+  targetNamespace: monitoring
+  timeout: 10m0s
+  upgrade:
+    remediation:
+      retries: 3
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: prometheus
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: ./charts/prometheus
+      interval: 10m0s
+      sourceRef:
+        kind: GitRepository
+        name: lucas-engineering-apps
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  interval: 30m0s
+  releaseName: prometheus
+  targetNamespace: monitoring
+  timeout: 10m0s
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    prometheus:
+      server:
+        ingress:
+          enabled: false
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: opentelemetry-collector
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: ./charts/opentelemetry-collector
+      interval: 10m0s
+      sourceRef:
+        kind: GitRepository
+        name: lucas-engineering-apps
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  interval: 30m0s
+  releaseName: opentelemetry-collector
+  targetNamespace: monitoring
+  timeout: 10m0s
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    opentelemetry-collector:
+      ingress:
+        enabled: false
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: grafana
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: ./charts/grafana
+      interval: 10m0s
+      sourceRef:
+        kind: GitRepository
+        name: lucas-engineering-apps
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  interval: 30m0s
+  releaseName: grafana
+  targetNamespace: monitoring
+  timeout: 10m0s
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    grafana:
+      ingress:
+        enabled: false
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: uptime-kuma
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: ./charts/uptime-kuma
+      interval: 10m0s
+      sourceRef:
+        kind: GitRepository
+        name: lucas-engineering-apps
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  interval: 30m0s
+  releaseName: uptime-kuma
+  targetNamespace: monitoring
+  timeout: 10m0s
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    uptime-kuma:
+      ingress:
+        enabled: false

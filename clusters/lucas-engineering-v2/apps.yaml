@@ -1,0 +1,109 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: apps-sources
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: flux-system
+  interval: 10m0s
+  path: ./apps/sources
+  prune: true
+  retryInterval: 1m0s
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 5m0s
+  wait: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: apps-foundations
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: apps-sources
+  interval: 10m0s
+  path: ./apps/releases/00-foundations
+  prune: true
+  retryInterval: 1m0s
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 10m0s
+  wait: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: apps-observability
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: apps-foundations
+  interval: 10m0s
+  path: ./apps/releases/01-observability
+  prune: true
+  retryInterval: 1m0s
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 15m0s
+  wait: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: apps-ci-registry
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: apps-observability
+  interval: 10m0s
+  path: ./apps/releases/02-ci-registry
+  prune: true
+  retryInterval: 1m0s
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 15m0s
+  wait: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: apps-core
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: apps-ci-registry
+  interval: 10m0s
+  path: ./apps/releases/03-core
+  prune: true
+  retryInterval: 1m0s
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  suspend: true
+  timeout: 15m0s
+  wait: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: apps-agent-products
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: apps-core
+  interval: 10m0s
+  path: ./apps/releases/04-agent-products
+  prune: true
+  retryInterval: 1m0s
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  suspend: true
+  timeout: 15m0s
+  wait: true

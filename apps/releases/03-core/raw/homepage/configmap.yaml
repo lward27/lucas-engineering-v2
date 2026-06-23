@@ -1,0 +1,171 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homepage-config
+  namespace: homepage
+data:
+  bookmarks.yaml: |
+    - Monitoring:
+        - Grafana:
+            - icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/grafana.png
+              href: https://grafana-v2.lucas.engineering
+              description: Metrics & dashboards
+        - Prometheus:
+            - icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/prometheus.png
+              href: https://prometheus-v2.lucas.engineering
+              description: Metrics collection
+        - Uptime Kuma:
+            - icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/uptime-kuma.png
+              href: https://uptime-v2.lucas.engineering
+              description: Service monitoring
+        - OTel:
+            - icon: https://icon.icepanel.io/Technology/svg/OpenTelemetry.svg
+              href: https://otel-v2.lucas.engineering
+              description: Observability pipeline
+
+    - Finance:
+        - Finance Frontend:
+            - icon: https://icon.icepanel.io/Technology/svg/React.svg
+              href: https://finance-v2.lucas.engineering
+              description: Finance app UI
+        - Finance API:
+            - icon: https://icon.icepanel.io/Technology/svg/Python.svg
+              href: https://finance-db-v2.lucas.engineering/docs
+              description: FastAPI backend
+        - YFinance:
+            - icon: https://icon.icepanel.io/Technology/svg/Python.svg
+              href: https://yfinance-v2.lucas.engineering/docs
+              description: Yahoo Finance scraper
+
+    - Platform:
+        - ArgoCD:
+            - icon: https://cdn.simpleicons.org/argo/EF7B4D
+              href: https://flux-v2.lucas.engineering
+              description: GitOps deployment
+        - OpenClaw:
+            - icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/openclaw-dark.svg
+              href: https://openclaw-v2.lucas.engineering
+              description: AI assistant (Nova!)
+        - Tekton:
+            - icon: https://cdn.simpleicons.org/kubernetes/326CE5
+              href: https://tekton-v2.lucas.engineering
+              description: CI/CD pipelines
+        - Code Server:
+            - icon: https://icon.icepanel.io/Technology/svg/Visual-Studio-Code-(VS-Code).svg
+              href: https://code-v2.lucas.engineering
+              description: Browser-based dev workspace
+        - Clawspace:
+            - icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/files.svg
+              href: https://clawspace-v2.lucas.engineering
+              description: OpenClaw workspace browser
+        - RAG Service:
+            - icon: https://icon.icepanel.io/Technology/svg/Qdrant.svg
+              href: https://rag-v2.lucas.engineering
+              description: Retrieval API & embeddings
+
+    - Forge:
+        - Forge Platform:
+            - icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/docker.png
+              href: https://forge-v2.lucas.engineering
+              description: Forge API & platform services
+        - Forge Admin:
+            - icon: https://icon.icepanel.io/Technology/svg/React.svg
+              href: https://forge-admin-v2.lucas.engineering
+              description: Forge admin console
+        - Forge Portal:
+            - icon: https://icon.icepanel.io/Technology/svg/React.svg
+              href: https://forge-portal-v2.lucas.engineering
+              description: Forge tenant portal
+
+    - Content:
+        - Ghost Blog:
+            - icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/ghost.png
+              href: https://blog-v2.lucas.engineering
+              description: Blog (ipponusa.com)
+        - Directus:
+            - icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/directus.png
+              href: https://directus-v2.lucas.engineering
+              description: Headless CMS
+        - Registry:
+            - icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/docker.png
+              href: https://registry.lucas.engineering
+              description: Container registry
+
+  services.yaml: |
+    - Infrastructure Health:
+        - Uptime Kuma:
+            href: https://uptime-v2.lucas.engineering/status/lucas-engineering
+            description: Service uptime monitoring
+            widget:
+              type: uptimekuma
+              url: https://uptime-v2.lucas.engineering
+              key: {{HOMEPAGE_VAR_UPTIME_KUMA_API_KEY}}
+              slug: lucas-engineering
+              mode: status
+
+  widgets.yaml: |
+    - datetime:
+        text_size: xl
+        format:
+          timeStyle: short
+          dateStyle: long
+          hour12: false
+    - resources:
+        cpu: true
+        memory: true
+        disk: false
+        uptime: true
+        cputemp: false
+        units: imperial
+        refresh: 5000
+        diskUnits: bytes
+    - kubernetes:
+        cluster:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+          label: "cluster"
+        nodes:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+
+  settings.yaml: |
+    title: Lucas Engineering | Mission Control
+    theme: dark
+    color: slate
+    background:
+      image: https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop
+      blur: sm
+      opacity: 20
+      saturate: 100
+    cardBlur: sm
+    headerStyle: clean
+    hideVersion: true
+    layout:
+      Infrastructure Health:
+        style: column
+        rows: 1
+      Monitoring:
+        style: column
+        rows: 2
+      Finance:
+        style: column
+        rows: 2
+      Platform:
+        style: column
+        rows: 2
+      Forge:
+        style: column
+        rows: 1
+      Content:
+        style: column
+        rows: 2
+
+  docker.yaml: |
+    ---
+
+  kubernetes.yaml: |
+    mode: cluster

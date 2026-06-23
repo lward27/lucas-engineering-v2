@@ -1,0 +1,97 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: finance-app-database-service
+spec:
+  selector:
+    app: finance-app-database-service
+  ports:
+  - protocol: "TCP"
+    port: 8091
+    targetPort: 8000
+  type: ClusterIP
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: finance-app-database-service
+spec:
+  selector:
+    matchLabels:
+      app: finance-app-database-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: finance-app-database-service
+    spec:
+      containers:
+      - name: finance-app-database-service
+        image: registry.lucas.engineering/finance_app_database_service:latest
+        imagePullPolicy: Always
+        env:
+        - name: PGHOST
+          value: "postgresql.apps-prod.svc.cluster.local"
+        - name: PGPORT
+          value: "5432"
+        - name: PGDATABASE
+          value: "finance_app"
+        - name: PGUSER
+          value: "finance_app_user"
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgresql-auth
+              key: postgres-password
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: finance-app-database-service-env
+              key: DATABASE_URL
+              optional: true
+        - name: OTEL_SERVICE_NAME
+          value: "finance-app-database-service"
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: "http://opentelemetry-collector.monitoring.svc.cluster.local:4317"
+        - name: OTEL_EXPORTER_OTLP_PROTOCOL
+          value: "grpc"
+        - name: OTEL_LOGS_EXPORTER
+          value: "otlp"
+        - name: OTEL_METRICS_EXPORTER
+          value: "otlp"
+        - name: OTEL_TRACES_EXPORTER
+          value: "otlp"
+        - name: OTEL_PYTHON_LOG_CORRELATION
+          value: "true"
+        - name: OTEL_RESOURCE_ATTRIBUTES
+          value: "deployment.environment=production,service.namespace=apps-prod"
+        ports:
+        - containerPort: 8000
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: finance-app-database-service
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: finance-db-v2.lucas.engineering
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: finance-app-database-service
+            port:
+              number: 8091
+  tls:
+  - hosts:
+    - finance-db-v2.lucas.engineering
+    secretName: finance-db-lucas-engineering-tls

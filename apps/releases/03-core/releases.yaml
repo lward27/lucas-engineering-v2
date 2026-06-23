@@ -1,0 +1,87 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: code-server
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: ./charts/code-server
+      interval: 10m0s
+      sourceRef:
+        kind: GitRepository
+        name: lucas-engineering-apps
+        namespace: flux-system
+  interval: 30m0s
+  releaseName: code-server
+  targetNamespace: code-server
+  values:
+    codeServer:
+      ingress:
+        enabled: false
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: excalidraw
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: ./charts/excalidraw
+      interval: 10m0s
+      sourceRef:
+        kind: GitRepository
+        name: lucas-engineering-apps
+        namespace: flux-system
+  interval: 30m0s
+  releaseName: excalidraw
+  targetNamespace: apps-prod
+  values:
+    frontend:
+      host: draw-v2.lucas.engineering
+      roomUrl: https://draw-room-v2.lucas.engineering
+    room:
+      host: draw-room-v2.lucas.engineering
+      corsOrigin: https://draw-v2.lucas.engineering
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: escape
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: ./charts/escape
+      interval: 10m0s
+      sourceRef:
+        kind: GitRepository
+        name: lucas-engineering-apps
+        namespace: flux-system
+  interval: 30m0s
+  releaseName: escape
+  targetNamespace: escape
+  values:
+    frontend:
+      host: escape-v2.lucas.engineering
+    backend:
+      host: escape-api-v2.lucas.engineering
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: data-log-visual
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: ./charts/data-log-visual
+      interval: 10m0s
+      sourceRef:
+        kind: GitRepository
+        name: data-log-visual-app
+        namespace: flux-system
+  interval: 30m0s
+  releaseName: data-log-visual
+  targetNamespace: apps-prod

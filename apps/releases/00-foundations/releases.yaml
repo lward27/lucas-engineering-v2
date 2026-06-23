@@ -1,0 +1,149 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: agentic-platform
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: ./charts/agentic-platform
+      interval: 10m0s
+      sourceRef:
+        kind: GitRepository
+        name: lucas-engineering-apps
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  interval: 30m0s
+  releaseName: agentic-platform
+  targetNamespace: flux-system
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    hermes:
+      desktop:
+        dashboardUrl: https://hermes-v2.lucas.engineering
+    rbac:
+      readonlyObserver:
+        enabled: true
+    networkPolicies:
+      agentRuntimeDefaultDeny:
+        enabled: true
+      hermesReadonlyEgress:
+        enabled: false
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: sentinel-rbac
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: ./charts/sentinel-rbac
+      interval: 10m0s
+      sourceRef:
+        kind: GitRepository
+        name: lucas-engineering-apps
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  interval: 30m0s
+  releaseName: sentinel-rbac
+  targetNamespace: monitoring-agents
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    sentinel:
+      namespace: monitoring-agents
+      rbac:
+        argocd:
+          enabled: false
+        certs:
+          enabled: false
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: postgresql
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: ./charts/postgresql
+      interval: 10m0s
+      sourceRef:
+        kind: GitRepository
+        name: lucas-engineering-apps
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  interval: 30m0s
+  releaseName: postgresql
+  targetNamespace: apps-prod
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    persistence:
+      storageClass: local-path
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: qdrant
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: ./charts/qdrant
+      interval: 10m0s
+      sourceRef:
+        kind: GitRepository
+        name: lucas-engineering-apps
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  interval: 30m0s
+  releaseName: qdrant
+  targetNamespace: apps-prod
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    persistence:
+      storageClass: local-path
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ollama
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: ./charts/ollama
+      interval: 10m0s
+      sourceRef:
+        kind: GitRepository
+        name: lucas-engineering-apps
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  interval: 30m0s
+  releaseName: ollama
+  targetNamespace: apps-prod
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    persistence:
+      storageClass: local-path
