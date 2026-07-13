@@ -8,6 +8,7 @@
 - The registry, Tekton, and observability ingress templates are disabled in values because v2 exposure is Cloudflare-managed.
 - RabbitMQ is represented locally instead of by copying the old raw manifest because the old manifest committed static credential values.
 - Tekton is not active in the CI/registry phase yet because the old `tekton-pipeline` wrapper renders duplicate `ConfigMap/config-observability` resources and Helm rejects the release before install.
+- Hermes is deployed independently of the suspended agent/product phase so it can run in-cluster without releasing the other agent or product workloads.
 
 ## Backlog
 

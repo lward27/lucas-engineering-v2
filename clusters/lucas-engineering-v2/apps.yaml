@@ -92,6 +92,24 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: apps-hermes-agent
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: apps-ci-registry
+  interval: 10m0s
+  path: ./apps/releases/04-hermes-agent
+  prune: true
+  retryInterval: 1m0s
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 15m0s
+  wait: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: apps-agent-products
   namespace: flux-system
 spec:
