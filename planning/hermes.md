@@ -4,7 +4,7 @@
 
 - Hermes runs as a StatefulSet in `lucas-engineering-v2`; the desktop endpoint and external `EndpointSlice` mode are not used.
 - Hermes uses Fireworks' OpenAI-compatible endpoint with `accounts/fireworks/models/glm-5p2` as its sole configured provider and default model.
-- The v2 `hermes-api-keys` secret contains only `FIREWORKS_API_KEY` and `TELEGRAM_BOT_TOKEN`. SSH, kubeconfig, and GitHub credentials are intentionally not copied.
+- The v2 `hermes-api-keys` secret contains `FIREWORKS_API_KEY`, `TELEGRAM_BOT_TOKEN`, and an out-of-band generated `API_SERVER_KEY`. SSH, kubeconfig, and GitHub credentials are intentionally not copied.
 - The chart's kubectl and GitHub CLI tools are disabled to keep the in-cluster agent capability set narrow by default.
 - Hermes is deployed through its own Flux Kustomization, independent of the suspended agent/product phase, so it cannot trigger unrelated releases.
 - The dashboard remains a ClusterIP service. Cloudflare Tunnel must route to the dashboard service, and Cloudflare Access must protect the published hostname.
