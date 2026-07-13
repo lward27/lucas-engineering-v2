@@ -43,7 +43,7 @@ spec:
       operator:
         clusterPoolIPv4PodCIDRList:
           - 10.42.0.0/16
-    k8sServiceHost: 127.0.0.1
+    k8sServiceHost: 192.168.20.242
     k8sServicePort: 6443
     kubeProxyReplacement: true
     operator:
