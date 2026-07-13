@@ -10,6 +10,7 @@
 - The dashboard remains a ClusterIP service. Cloudflare Tunnel must route to the dashboard service, and Cloudflare Access must protect the published hostname.
 - The custom network policy accepts dashboard traffic only from the `cloudflared` namespace and permits DNS plus outbound HTTPS for Fireworks and Telegram.
 - The single v2 node has only 100m CPU request headroom, so Hermes requests 80m CPU and 224Mi memory across its three containers while retaining the chart's burst limits.
+- Hermes allows a 20-minute initial Helm install because the first agent image pull and dashboard initialization exceeded Flux Helm's five-minute default.
 
 ## Backlog
 
